@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Create posts</title>
 
         <!-- Fonts -->
         <link href='https://fonts.googleapis.com/css?family=Raleway:100,400,300,600' rel='stylesheet' type='text/css'>
@@ -76,16 +76,14 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Posts 
+                    Create Post 
                 </div>
 
-                <a href="/posts/create">Create new post</a>
-
-                <ul>
-                @foreach ($posts as $post)
-                    <li>{{ $post->body }}</li>
-                @endforeach
-                </ul>
+                <form method="post" action="/posts">
+                    {{ csrf_field() }}
+                    <input name="body">
+                    <input type="submit">
+                </form>
             </div>
         </div>
     </body>

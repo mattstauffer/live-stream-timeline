@@ -12,5 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome')
+        ->with('posts', App\Post::all());
+});
+
+Route::get('posts/create', function () {
+    return view('posts.create');
+});
+
+Route::post('posts', function (Illuminate\Http\Request $request) {
+    App\Post::create(['body' => $request->input('body')]);
+
+    return redirect('/');
 });
