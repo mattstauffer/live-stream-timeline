@@ -5,68 +5,63 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href='https://fonts.googleapis.com/css?family=Raleway:100,400,300,600' rel='stylesheet' type='text/css'>
+        <title>Posts</title>
 
         <!-- Styles -->
         <style>
+            html {
+                box-sizing: border-box;
+            }
+
+            *, *:before, *:after {
+                box-sizing: inherit;
+            }
+
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Raleway';
-                font-weight: 100;
                 height: 100vh;
                 margin: 0;
                 padding: 10px;
             }
 
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 0;
-                top: 0;
-            }
-
             .content {
+                margin: 0 auto;
+                max-width: 800px;
                 text-align: center;
             }
 
             .title {
-                font-size: 84px;
+                font-size: 3rem;
             }
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
+            .timeline {
+                border-left: 1px solid #333;
+                list-style-type: none;
+                padding-left: 2rem;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
+                .timeline__post {
+                    border: 1px solid #ddd;
+                    margin-bottom: 1em;
+                    padding: 1em;
+                    position: relative;
+                }
+
+                .timeline__post::after {
+                    border-top: 1px solid #444;
+                    content: "";
+                    display: block;
+                    height: 1em;
+                    left: calc(-2rem - 1px);
+                    position: absolute;
+                    top: 50%;
+                    width: 2rem;
+                }
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="content">
             @if (Route::has('login'))
                 <div class="top-right links">
                     <a href="{{ url('/login') }}">Login</a>
@@ -81,11 +76,26 @@
 
                 <a href="/posts/create">Create new post</a>
 
-                <ul>
+                <ul class="timeline">
                 @foreach ($posts as $post)
-                    <li>{{ $post->body }}</li>
+                    <li class="timeline__post">
+                        <div style="font-size: {{ ($post->votesCount / $posts->max('votesCount')) + 1 }}em">
+                            "{{ $post->body }}" - {{ $post->creator }} [{{ $post->votesCount }}]
+                            @if (Auth::user()->votes()->where('post_id', $post->id)->count() == 0)
+                            <a href="/posts/{{ $post->id }}/vote/create">Vote</a>
+                            @else
+                            <a href="/posts/{{ $post->id }}/vote/delete">Un-Vote</a>
+                            @endif
+                        </div>
+                    </li>
                 @endforeach
                 </ul>
+
+                <br><br><br><br><br>
+                <hr>
+                @if (Auth::check())
+                    You are logged in in as {{ Auth::user()->name }}.
+                @endif
             </div>
         </div>
     </body>

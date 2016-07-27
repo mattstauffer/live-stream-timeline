@@ -81,7 +81,11 @@
 
                 <form method="post" action="/posts">
                     {{ csrf_field() }}
-                    <input name="body">
+                    <label for="body">Body</label>
+                    <input name="body"><br>
+                    <label for="creator">Creator</label>
+                    <input name="creator">
+                    <br><br>
                     <input type="submit">
                 </form>
             </div>
