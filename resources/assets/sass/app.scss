@@ -40,7 +40,20 @@ html, body {
     margin-left: 7rem;
     padding-left: 2rem;
     padding-top: 1rem;
+    position: relative;
 }
+    .timeline::before {
+        background: #ddd;
+        border-radius: 1rem;
+        border: 1px solid #333;
+        content: "";
+        display: block;
+        height: 2rem;
+        left: -1rem;
+        position: absolute;
+        top: -2rem;
+        width: 2rem;
+    }
 
     .timeline__post {
         border: 1px solid #bbb;

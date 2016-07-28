@@ -16,7 +16,7 @@
                 <span class="post__creator">- {{ $post->creator }}</span>
             </div>
             <div class="post__meta">
-                9:16pm<br>
+                {{ $post->created_at->format('g:ia') }}<br>
 
                 @if (Auth::user()->likes()->where('post_id', $post->id)->count() == 0)
                     <a href="/{{ $conference->slug }}/posts/{{ $post->id }}/like/create" class="like-button">
