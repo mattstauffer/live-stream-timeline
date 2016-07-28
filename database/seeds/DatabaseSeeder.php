@@ -12,5 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         factory(\App\User::class)->create();
+        factory(\App\Conference::class)->create(['slug' => 'laracon-2016']);
     }
 }

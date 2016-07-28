@@ -9,7 +9,7 @@
             <div class="panel-body">
                 @include('partials.errors')
 
-                <form method="post" action="/posts" class="form-horizontal">
+                <form method="post" action="/{{ $conference->slug }}/posts" class="form-horizontal">
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label for="body" class="col-sm-2 text-right">Body</label>

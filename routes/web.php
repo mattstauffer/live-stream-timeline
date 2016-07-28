@@ -17,22 +17,29 @@ if (! App::runningInConsole()) {
 
 Route::get('/', function () {
     return view('welcome')
-        ->with('posts', App\Post::all());
+        ->with('conferences', App\Conference::all());
 });
 
+Route::group(['prefix' => '{conference}'], function () {
+    Route::get('/', function (App\Conference $conference) {
+        return view('posts.index')
+            ->with('posts', $conference->posts)
+            ->with('conference', $conference);
+    });
 
-Route::get('posts/create', function () {
-    return view('posts.create');
-});
+    Route::group(['prefix' => 'posts'], function () {
+        Route::get('create', 'PostsController@create');
+        Route::post('/', 'PostsController@store');
 
-Route::post('posts', 'PostsController@store');
+        Route::get('{post}/like/create', function (App\Conference $conference, App\Post $post) {
+            App\Like::firstOrCreate(['user_id' => Auth::user()->id, 'post_id' => $post->id]);
+            return redirect('/' . $conference->slug);
+        });
 
-Route::get('posts/{post}/like/create', function (App\Post $post) {
-    App\Like::firstOrCreate(['user_id' => Auth::user()->id, 'post_id' => $post->id]);
-    return redirect('/');
-});
+        Route::get('{post}/like/delete', function (App\Conference $conference, App\Post $post) {
+            App\Like::where(['user_id' => Auth::user()->id, 'post_id' => $post->id])->delete();
+            return redirect('/' . $conference->slug);
+        });
+    });
 
-Route::get('posts/{post}/like/delete', function (App\Post $post) {
-    App\Like::where(['user_id' => Auth::user()->id, 'post_id' => $post->id])->delete();
-    return redirect('/');
 });

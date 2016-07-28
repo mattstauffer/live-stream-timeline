@@ -17,4 +17,9 @@ class Post extends Model
     {
         return $this->likes()->count();
     }
+
+    public function conference()
+    {
+        return $this->belongsTo(Conference::class);
+    }
 }
