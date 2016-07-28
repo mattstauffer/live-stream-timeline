@@ -11,7 +11,9 @@
 |
  */
 
-Auth::loginUsingId(1);
+if (! App::runningInConsole()) {
+    Auth::loginUsingId(1);
+}
 
 Route::get('/', function () {
     return view('welcome')
@@ -23,18 +25,14 @@ Route::get('posts/create', function () {
     return view('posts.create');
 });
 
-Route::post('posts', function (Illuminate\Http\Request $request) {
-    App\Post::create($request->only(['body', 'creator']));
+Route::post('posts', 'PostsController@store');
 
+Route::get('posts/{post}/like/create', function (App\Post $post) {
+    App\Like::firstOrCreate(['user_id' => Auth::user()->id, 'post_id' => $post->id]);
     return redirect('/');
 });
 
-Route::get('posts/{post}/vote/create', function (App\Post $post) {
-    App\Vote::firstOrCreate(['user_id' => Auth::user()->id, 'post_id' => $post->id]);
-    return redirect('/');
-});
-
-Route::get('posts/{post}/vote/delete', function (App\Post $post) {
-    App\Vote::where(['user_id' => Auth::user()->id, 'post_id' => $post->id])->delete();
+Route::get('posts/{post}/like/delete', function (App\Post $post) {
+    App\Like::where(['user_id' => Auth::user()->id, 'post_id' => $post->id])->delete();
     return redirect('/');
 });

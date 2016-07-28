@@ -17,8 +17,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function votes()
+    public function likes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Like::class);
     }
 }

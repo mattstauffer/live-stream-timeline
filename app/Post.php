@@ -8,13 +8,13 @@ class Post extends Model
 {
     protected $fillable = ['body', 'creator'];
 
-    public function votes()
+    public function likes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Like::class);
     }
 
-    public function getVotesCountAttribute()
+    public function getLikesCountAttribute()
     {
-        return $this->votes()->count();
+        return $this->likes()->count();
     }
 }
